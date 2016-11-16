@@ -16,7 +16,7 @@ run:
   args: 
     - -c
     - |
-    cd repo
-    ./gradlew clean build
+        cd repo
+        ./gradlew clean build
 params:
   JAVA_OPTIONS: 
