@@ -1,0 +1,26 @@
+---
+groups:
+    - name: all
+      jobs:
+        - build
+        # - publish-to-artifactory
+
+resources:
+  - name: repo-develop
+    type: git
+    source:
+      uri: git@github.com:bijukunjummen/sample-spring-cloud-svc-ci.git
+      private_key: {{github-private-key}}
+      branch: develop
+
+jobs:
+  - name: build
+    serial: true
+    public: true
+    plan:
+      - aggregate:
+        - get: repo
+          resource: repo-develop
+          # trigger: true
+      - task: compile
+        file: repo/ci/tasks/unit.yml
