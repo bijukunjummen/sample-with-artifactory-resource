@@ -13,6 +13,13 @@ resources:
       private_key: {{github-private-key}}
       branch: develop
 
+  - name: repo-pipeline
+    type: git
+    source:
+      uri: git@github.com:bijukunjummen/sample-with-artifactory-resource.git
+      private_key: {{github-private-key}}
+      branch: master
+
 jobs:
   - name: build
     serial: true
@@ -21,6 +28,8 @@ jobs:
       - aggregate:
         - get: repo
           resource: repo-develop
+        - get: pipeline
+          resource: repo-pipeline
           # trigger: true
       - task: compile
-        file: repo/ci/tasks/unit.yml
+        file: pipeline/tasks/build.yml
