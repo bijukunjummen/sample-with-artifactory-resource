@@ -9,10 +9,11 @@ image_resource:
 
 inputs:
   - name: repo
+  - name: pipeline
 outputs:
   - name: build
 run:
-  path: /bin/sh
+  path: /bin/bash
   args: 
     - -c
     - |
