@@ -4,6 +4,11 @@ groups:
       jobs:
         - build
         # - publish-to-artifactory
+resource_types:
+- name: artifactory
+  type: docker-image
+  source:
+    repository: pivotalservices/artifactory-resource
 
 resources:
   - name: repo-develop
@@ -20,6 +25,16 @@ resources:
       private_key: {{github-private-key}}
       branch: master
 
+  - name: file-repository
+    type: artifactory
+    source:
+      endpoint: http://192.168.99.100:8081/artifactory
+      repository: "/ext-release-local"
+      regex: "sample-spring-cloud-svc-ci-(?<version>.*).jar"
+      username: admin
+      password: password
+      skip_ssl_verification: true      
+
 jobs:
   - name: build
     serial: true
@@ -33,3 +48,7 @@ jobs:
           # trigger: true
       - task: compile
         file: pipeline/tasks/build.yml
+
+      - put: file-repository
+        params:
+          file: "./build/sample-spring-cloud-svc-ci-*.jar"
